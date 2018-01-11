@@ -1,0 +1,49 @@
+{
+  "name": "iota-gateway",
+  "version": "0.0.1",
+  "description": "Network gateway for IOTA",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc --project tsconfig.json",
+    "test": "mocha test/**/*.spec.ts --require ts-node/register",
+    "test:watch": "npm run test -- --watch --watch-extensions=ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexpods/iota-gateway.git"
+  },
+  "keywords": [
+    "iota",
+    "gateway",
+    "network",
+    "node",
+    "iota-node"
+  ],
+  "author": "alexpods <alexey.podskrebyshev@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/alexpods/iota-gateway/issues"
+  },
+  "homepage": "https://github.com/alexpods/iota-gateway#readme",
+  "dependencies": {
+    "block-stream": "0.0.9",
+    "iota-tangle": "0.0.6"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.0",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/mocha": "^2.2.46",
+    "@types/node": "^9.3.0",
+    "@types/sinon": "^4.1.2",
+    "@types/sinon-chai": "^2.7.29",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^4.1.0",
+    "sinon": "^4.1.4",
+    "sinon-chai": "^2.14.0",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2"
+  }
+}
