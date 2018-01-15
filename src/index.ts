@@ -1,6 +1,4 @@
-export { Gateway } from './gateway'
+export { Gateway, Data } from './gateway'
+export { Neighbor } from './neighbor'
+export { Transport } from './transport'
 export { Packer } from './packer'
-export { Transport, ReceiveCallback } from './transport'
-export { TcpTransport } from './tcp-transport'
-export { UdpTransport } from './udp-transport'
-
