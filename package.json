@@ -28,13 +28,13 @@
   },
   "homepage": "https://github.com/alexpods/iota-gateway#readme",
   "dependencies": {
+    "@types/node": "^9.3.0",
     "iota-tangle": "0.0.6"
   },
   "devDependencies": {
     "@types/chai": "^4.1.0",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^2.2.46",
-    "@types/node": "^9.3.0",
     "@types/sinon": "^4.1.2",
     "@types/sinon-chai": "^2.7.29",
     "chai": "^4.1.2",
