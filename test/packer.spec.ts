@@ -11,7 +11,6 @@ describe('Packer', () => {
   let transaction: Transaction
   let requestHash: Hash
 
-
   beforeEach(() => {
     serializer = new Serializer()
     factory = new Factory({ serializer })
@@ -20,7 +19,6 @@ describe('Packer', () => {
     transaction = generateTransaction()
     requestHash = generateHash()
   })
-
 
   describe('pack(packetData)', () => {
     it('should pack the specified transaction and transaction hash into a packet of bytes', () => {
@@ -36,7 +34,6 @@ describe('Packer', () => {
       expect(packetRequestHashBytes.equals(requestHash.bytes.slice(0, REQUEST_HASH_SIZE))).to.be.true
     })
   })
-
 
   describe('unpack(packet)', () => {
     it('should unpack the specified packet', () => {

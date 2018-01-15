@@ -9,20 +9,20 @@ export class Gateway extends EventEmitter {
   private _neighbors: Neighbor[]
   private _transports: Transport[]
 
-  private _neighborsTransportsMap:  Map<Neighbor, Transport>
+  private _neighborsTransportsMap: Map<Neighbor, Transport>
 
   private _isRunning: boolean = false
 
-  private _onTransportReceive: ((data: Data, neighbor: Neighbor) => void)|null = null
-  private _onTransportError:   ((error: any) => void)|null = null
+  private _onTransportReceive: ((data: Data, neighbor: Neighbor) => void) | null = null
+  private _onTransportError: ((error: any) => void) | null = null
 
-  constructor(params: {
+  constructor (params: {
     neighbors?: Neighbor[]
     transports?: Transport[]
   }) {
     super()
     const transports = params.transports || []
-    const neighbors  = params.neighbors  || []
+    const neighbors = params.neighbors || []
 
     if (!transports.length) {
       throw new Error('You should provide at least one transport for the gateway!')
@@ -42,18 +42,16 @@ export class Gateway extends EventEmitter {
     }
 
     this._transports = transports
-    this._neighbors  = neighbors
+    this._neighbors = neighbors
 
     this._neighborsTransportsMap = neighborsTransportsMap
   }
 
-
-  get isRunning(): boolean {
+  get isRunning (): boolean {
     return this._isRunning
   }
 
-
-  getNeighbor(neighborAddress: string): Neighbor|null {
+  getNeighbor (neighborAddress: string): Neighbor | null {
     for (const neighbor of this._neighbors) {
       if (neighbor.match(neighborAddress)) {
         return neighbor
@@ -63,8 +61,7 @@ export class Gateway extends EventEmitter {
     return null
   }
 
-
-  async addNeighbor(neighbor: Neighbor): Promise<void> {
+  async addNeighbor (neighbor: Neighbor): Promise<void> {
     if (this._neighborsTransportsMap.has(neighbor)) {
       throw new Error(`Couldn't add a neighbor: the neighbor '${neighbor.address}' already exists!`)
     }
@@ -84,8 +81,7 @@ export class Gateway extends EventEmitter {
     throw new Error(`Couldn't find a transport for the neighbor '${neighbor.address}'!`)
   }
 
-
-  async removeNeighbor(neighbor: Neighbor): Promise<void> {
+  async removeNeighbor (neighbor: Neighbor): Promise<void> {
     if (!this._neighborsTransportsMap.has(neighbor)) {
       throw new Error(`Couldn't remove a neighbor: the neighbor '${neighbor.address}' doesn't exists!`)
     }
@@ -98,8 +94,7 @@ export class Gateway extends EventEmitter {
     this._neighbors.splice(this._neighbors.indexOf(neighbor), 1)
   }
 
-
-  async run(): Promise<void> {
+  async run (): Promise<void> {
     if (this._isRunning) {
       throw new Error('The gateway is already running!')
     }
@@ -119,23 +114,23 @@ export class Gateway extends EventEmitter {
 
       for (const transport of this._transports) {
         transport.on('receive', onTransportReceive)
-        transport.on('error',   onTransportError)
+        transport.on('error', onTransportError)
       }
 
       this._onTransportReceive = onTransportReceive
-      this._onTransportError   = onTransportError
+      this._onTransportError = onTransportError
 
     } catch (error) {
       await Promise.all(this._neighbors.map(async (neighbor: Neighbor) => {
         try {
           await this._neighborsTransportsMap.get(neighbor).removeNeighbor(neighbor)
-        } catch (error) {}
+        } catch (error) { /* ignore any errors */ }
       }))
 
       await Promise.all(this._transports.map(async (transport: Transport) => {
         try {
           await transport.shutdown()
-        } catch (error) {}
+        } catch (error) { /* ignore any errors */ }
       }))
 
       throw error
@@ -145,8 +140,7 @@ export class Gateway extends EventEmitter {
     this._isRunning = true
   }
 
-
-  async shutdown(): Promise<void> {
+  async shutdown (): Promise<void> {
     if (!this._isRunning) {
       throw new Error('The gateway is not running!')
     }
@@ -161,18 +155,17 @@ export class Gateway extends EventEmitter {
 
     for (const transport of this._transports) {
       transport.removeListener('receive', this._onTransportReceive)
-      transport.removeListener('error',   this._onTransportError)
+      transport.removeListener('error', this._onTransportError)
     }
 
     this._onTransportReceive = null
-    this._onTransportError   = null
+    this._onTransportError = null
 
     this.emit('shutdown')
     this._isRunning = false
   }
 
-
-  async send(data: Data, neighborAddress: string): Promise<void> {
+  async send (data: Data, neighborAddress: string): Promise<void> {
     if (!this._isRunning) {
       throw new Error("Can't send a data: the gateway is not running!")
     }
