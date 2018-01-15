@@ -1,11 +1,11 @@
 export abstract class Neighbor {
   abstract get address(): string
 
-  get gatewayCanSend(): boolean {
+  get gatewayCanSendTo(): boolean {
     return true
   }
 
-  get gatewayCanReceive(): boolean {
+  get gatewayCanReceiveFrom(): boolean {
     return true
   }
 

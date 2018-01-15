@@ -114,7 +114,8 @@ export class Gateway extends EventEmitter {
       }))
 
       const onTransportReceive = (data: Data, neighbor: Neighbor) => this.emit('receive', data, neighbor.address)
-      const onTransportError   = (error: any) => this.emit('error', error)
+
+      const onTransportError = (error: any) => this.emit('error', error)
 
       for (const transport of this._transports) {
         transport.on('receive', onTransportReceive)

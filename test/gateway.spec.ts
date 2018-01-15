@@ -369,7 +369,6 @@ describe("Gateway", () => {
 
       expect(transports[0].addNeighbor).to.not.have.been.called
       expect(transports[1].addNeighbor).to.have.been.calledWith(neighbor)
-
     })
 
     it("should be rejected if there is no transport that supports specified neighbor", async () => {
