@@ -16,11 +16,11 @@ export class Packer {
     this._factory = params.factory
   }
 
-  get packetSize (): number {
+  get packetSize(): number {
     return PACKET_SIZE
   }
 
-  pack (data: Data): Buffer {
+  pack(data: Data): Buffer {
     const buffer = Buffer.alloc(PACKET_SIZE)
 
     data.transaction.bytes.copy(buffer, TRANSCTION_OFFSET, 0, TRANSACTION_SIZE)
@@ -29,7 +29,7 @@ export class Packer {
     return buffer
   }
 
-  unpack (packet: Buffer): Data {
+  unpack(packet: Buffer): Data {
     const transactionBytes = packet.slice(TRANSCTION_OFFSET, TRANSCTION_OFFSET + TRANSACTION_SIZE)
     const hashBytes = packet.slice(REQUEST_HASH_OFFSET, REQUEST_HASH_OFFSET + REQUEST_HASH_SIZE)
 
