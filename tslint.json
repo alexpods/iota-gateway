@@ -3,7 +3,8 @@
     "defaultSeverity": "error",
     "jsRules": {},
     "rules": {
-        "no-var-requires": false
+        "no-var-requires": false,
+        "strict-type-predicates": false
     },
     "rulesDirectory": []
 }
