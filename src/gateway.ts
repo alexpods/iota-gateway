@@ -13,7 +13,7 @@ export class Gateway extends EventEmitter {
 
   private _isRunning: boolean = false
 
-  private _onTransportReceive: ((data: Data, neighbor: Neighbor) => void) | null = null
+  private _onTransportReceive: ((data: Data, neighbor: Neighbor, address: string) => void) | null = null
   private _onTransportError: ((error: any) => void) | null = null
 
   constructor(params: {
@@ -108,7 +108,7 @@ export class Gateway extends EventEmitter {
         await this._neighborsTransportsMap.get(neighbor).addNeighbor(neighbor)
       }))
 
-      const onTransportReceive = (data: Data, neighbor: Neighbor) => this.emit('receive', data, neighbor.address)
+      const onTransportReceive = (data: Data, neighbor: Neighbor, address) => this.emit('receive', data, address)
 
       const onTransportError = (error: any) => this.emit('error', error)
 
@@ -118,7 +118,7 @@ export class Gateway extends EventEmitter {
       }
 
       this._onTransportReceive = onTransportReceive
-      this._onTransportError = onTransportError
+      this._onTransportError   = onTransportError
 
     } catch (error) {
       await Promise.all(this._neighbors.map(async (neighbor: Neighbor) => {
@@ -176,6 +176,6 @@ export class Gateway extends EventEmitter {
       throw new Error(`Neighbor is not found for address '${neighborAddress}'!`)
     }
 
-    await this._neighborsTransportsMap.get(neighbor).send(data, neighbor)
+    await this._neighborsTransportsMap.get(neighbor).send(data, neighbor, neighborAddress)
   }
 }

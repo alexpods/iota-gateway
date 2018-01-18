@@ -96,7 +96,7 @@ describe('Gateway', () => {
       const data = { transaction: generateTransaction(), requestHash: generateHash() }
       const neighbor = neighbors[0]
 
-      transports[0].emit('receive', data, neighbor)
+      transports[0].emit('receive', data, neighbor, neighbor.address)
 
       expect(receiveEventCallback).to.have.been.called
 
