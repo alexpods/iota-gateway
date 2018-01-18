@@ -13,5 +13,5 @@ export abstract class Transport extends EventEmitter {
   abstract async addNeighbor(neighbor: Neighbor): Promise<void>
   abstract async removeNeighbor(neighbor: Neighbor): Promise<void>
 
-  abstract async send(data: Data, neighbor: Neighbor): Promise<void>
+  abstract async send(data: Data, neighbor: Neighbor, address: string): Promise<void>
 }
