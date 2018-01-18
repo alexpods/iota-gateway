@@ -1,6 +1,6 @@
 {
   "name": "iota-gateway",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Network gateway for IOTA",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
