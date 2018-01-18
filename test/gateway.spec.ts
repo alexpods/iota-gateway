@@ -33,6 +33,7 @@ describe('Gateway', () => {
   describe('run()', () => {
     let runEventCallback: SinonSpy
     let receiveEventCallback: SinonSpy
+    let neighborEventCallback: SinonSpy
     let errorEventCallback: SinonSpy
 
     beforeEach(() => {
@@ -43,9 +44,10 @@ describe('Gateway', () => {
         spy(transport, 'shutdown')
       }
 
-      gateway.on('run',       runEventCallback = spy())
-      gateway.on('receive',   receiveEventCallback = spy())
-      gateway.on('error',     errorEventCallback = spy())
+      gateway.on('run',      runEventCallback = spy())
+      gateway.on('receive',  receiveEventCallback = spy())
+      gateway.on('neighbor', neighborEventCallback = spy())
+      gateway.on('error',    errorEventCallback = spy())
     })
 
     it('should launch all transports', async () => {
@@ -104,6 +106,24 @@ describe('Gateway', () => {
 
       expect(emittedData).to.equal(data)
       expect(emittedNeighborAddress).to.equal(neighbor.address)
+    })
+
+    it('should start receiving new neighbors from transports', async () => {
+      await expect(gateway.run()).to.be.fulfilled
+
+      const newNeighbor = new NeighborStub({ address: 'address3' })
+
+      expect(gateway.getNeighbor(newNeighbor.address)).to.not.be.ok
+      expect(neighborEventCallback).to.not.have.been.called
+
+      transports[1].emit('neighbor', newNeighbor)
+
+      expect(gateway.getNeighbor(newNeighbor.address)).to.be.ok
+      expect(neighborEventCallback).to.have.been.called
+
+      const [emittedNewNeighbor] = neighborEventCallback.args[0]
+
+      expect(emittedNewNeighbor).to.equal(newNeighbor)
     })
 
     it('should start receiving errors from transports', async () => {
