@@ -30,7 +30,7 @@ export class Gateway extends EventEmitter {
     const neighbors = params.neighbors || []
 
     if (!transports.length) {
-      throw new Error('You should provide at least one transport for the gateway!')
+      throw new Error("You should provide at least one transport for the gateway!")
     }
 
     const neighborsTransportsMap = new Map<Neighbor, Transport>()
@@ -101,7 +101,7 @@ export class Gateway extends EventEmitter {
 
   async run(): Promise<void> {
     if (this._isRunning) {
-      throw new Error('The gateway is already running!')
+      throw new Error("The gateway is already running!")
     }
 
     try {
@@ -116,18 +116,18 @@ export class Gateway extends EventEmitter {
       for (const transport of this._transports) {
         let onReceive, onNeighbor, onError
 
-        transport.on('receive', onReceive = (data: Data, neighbor: Neighbor, address) => {
-          this.emit('receive', data, address)
+        transport.on("receive", onReceive = (data: Data, neighbor: Neighbor, address) => {
+          this.emit("receive", data, address)
         })
 
-        transport.on('neighbor', onNeighbor = (newNeighbor: Neighbor) => {
+        transport.on("neighbor", onNeighbor = (newNeighbor: Neighbor) => {
           this._neighborsTransportsMap.set(newNeighbor, transport)
           this._neighbors.add(newNeighbor)
-          this.emit('neighbor', newNeighbor)
+          this.emit("neighbor", newNeighbor)
         })
 
-        transport.on('error', onError = (error: any) => {
-          this.emit('error', error)
+        transport.on("error", onError = (error: any) => {
+          this.emit("error", error)
         })
 
         this._transportsListeners.set(transport, { onReceive, onNeighbor, onError })
@@ -149,13 +149,13 @@ export class Gateway extends EventEmitter {
       throw error
     }
 
-    this.emit('run')
+    this.emit("run")
     this._isRunning = true
   }
 
   async shutdown(): Promise<void> {
     if (!this._isRunning) {
-      throw new Error('The gateway is not running!')
+      throw new Error("The gateway is not running!")
     }
 
     await Promise.all(Array.from(this._neighbors).map((neighbor: Neighbor) => {
@@ -169,14 +169,14 @@ export class Gateway extends EventEmitter {
     for (const transport of this._transports) {
       const { onReceive, onNeighbor, onError } = this._transportsListeners.get(transport)
 
-      transport.removeListener('receive',  onReceive)
-      transport.removeListener('neighbor', onNeighbor)
-      transport.removeListener('error',    onError)
+      transport.removeListener("receive",  onReceive)
+      transport.removeListener("neighbor", onNeighbor)
+      transport.removeListener("error",    onError)
 
       this._transportsListeners.delete(transport)
     }
 
-    this.emit('shutdown')
+    this.emit("shutdown")
     this._isRunning = false
   }
 
