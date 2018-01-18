@@ -116,7 +116,7 @@ export class Gateway extends EventEmitter {
       for (const transport of this._transports) {
         let onReceive, onNeighbor, onError
 
-        transport.on("receive", onReceive = (data: Data, neighbor: Neighbor, address) => {
+        transport.on("receive", onReceive = (data: Data, neighbor: Neighbor, address: string) => {
           this.emit("receive", data, address)
         })
 

@@ -28,8 +28,10 @@
   },
   "homepage": "https://github.com/alexpods/iota-gateway#readme",
   "dependencies": {
+    "@types/crc": "^3.4.0",
     "@types/node": "^9.3.0",
-    "iota-tangle": "0.0.6"
+    "crc": "^3.5.0",
+    "iota-tangle": "^0.1.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.0",
